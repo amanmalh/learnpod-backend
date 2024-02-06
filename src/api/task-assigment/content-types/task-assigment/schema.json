@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "task_assigments",
+  "info": {
+    "singularName": "task-assigment",
+    "pluralName": "task-assigments",
+    "displayName": "Task Assignment",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "assignee": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "task": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::task.task"
+    },
+    "isCompleted": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "text"
+    }
+  }
+}

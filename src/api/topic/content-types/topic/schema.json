@@ -18,11 +18,6 @@
     "description": {
       "type": "text"
     },
-    "tasks": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::task.task"
-    },
     "owner": {
       "type": "relation",
       "relation": "oneToOne",
@@ -36,6 +31,18 @@
         "in_progress",
         "complete"
       ]
+    },
+    "tasks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::task.task",
+      "mappedBy": "topic"
+    },
+    "goal": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::goal.goal",
+      "inversedBy": "topics"
     }
   }
 }

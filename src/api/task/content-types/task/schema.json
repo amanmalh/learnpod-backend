@@ -4,7 +4,8 @@
   "info": {
     "singularName": "task",
     "pluralName": "tasks",
-    "displayName": "task"
+    "displayName": "task",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,6 +17,21 @@
     },
     "description": {
       "type": "text"
+    },
+    "topic": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::topic.topic",
+      "inversedBy": "tasks"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "created",
+        "assigned",
+        "complete",
+        "force_complete"
+      ]
     }
   }
 }

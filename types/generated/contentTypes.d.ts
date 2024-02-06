@@ -754,6 +754,7 @@ export interface ApiTaskTask extends Schema.CollectionType {
     singularName: 'task';
     pluralName: 'tasks';
     displayName: 'task';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -761,12 +762,62 @@ export interface ApiTaskTask extends Schema.CollectionType {
   attributes: {
     title: Attribute.String;
     description: Attribute.Text;
+    topic: Attribute.Relation<
+      'api::task.task',
+      'manyToOne',
+      'api::topic.topic'
+    >;
+    status: Attribute.Enumeration<
+      ['created', 'assigned', 'complete', 'force_complete']
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::task.task', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::task.task', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTaskAssigmentTaskAssigment extends Schema.CollectionType {
+  collectionName: 'task_assigments';
+  info: {
+    singularName: 'task-assigment';
+    pluralName: 'task-assigments';
+    displayName: 'Task Assignment';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    assignee: Attribute.Relation<
+      'api::task-assigment.task-assigment',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    task: Attribute.Relation<
+      'api::task-assigment.task-assigment',
+      'oneToOne',
+      'api::task.task'
+    >;
+    isCompleted: Attribute.Boolean;
+    notes: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::task-assigment.task-assigment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::task-assigment.task-assigment',
+      'oneToOne',
+      'admin::user'
+    > &
       Attribute.Private;
   };
 }
@@ -785,11 +836,6 @@ export interface ApiTopicTopic extends Schema.CollectionType {
   attributes: {
     title: Attribute.String;
     description: Attribute.Text;
-    tasks: Attribute.Relation<
-      'api::topic.topic',
-      'oneToMany',
-      'api::task.task'
-    >;
     owner: Attribute.Relation<
       'api::topic.topic',
       'oneToOne',
@@ -798,6 +844,12 @@ export interface ApiTopicTopic extends Schema.CollectionType {
     status: Attribute.Enumeration<
       ['draft', 'pending', 'in_progress', 'complete']
     >;
+    tasks: Attribute.Relation<
+      'api::topic.topic',
+      'oneToMany',
+      'api::task.task'
+    >;
+    goal: Attribute.Relation<'api::topic.topic', 'manyToOne', 'api::goal.goal'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -835,6 +887,7 @@ declare module '@strapi/types' {
       'api::goal.goal': ApiGoalGoal;
       'api::group.group': ApiGroupGroup;
       'api::task.task': ApiTaskTask;
+      'api::task-assigment.task-assigment': ApiTaskAssigmentTaskAssigment;
       'api::topic.topic': ApiTopicTopic;
     }
   }
